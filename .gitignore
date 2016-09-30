@@ -1,0 +1,9 @@
+
+# Created by https://www.gitignore.io/api/c
+
+### C ###
+
+# Executables
+huffman
+huffman.exe
+*.out
