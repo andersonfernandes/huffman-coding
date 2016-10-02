@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct node Node;
+
+struct node{
+
+  char item;
+  int frequency;
+  Node *next;
+  
+  Node *left;
+  Node *right;
+
+};
+
 void help();
 
 int main(int argc, char const *argv[]) {
@@ -9,6 +22,8 @@ int main(int argc, char const *argv[]) {
   char *src_filename, *dest_filename, option[3];
   char *file_content;
   size_t file_size;
+  int i, frequency[256] = {0};
+  
 
   if(argc == 1) {
     help();
@@ -49,6 +64,14 @@ int main(int argc, char const *argv[]) {
     file_content[file_size] = 0;
   }
 
+  for(i = 0; i < file_size; i++){
+
+    ++frequency[file_content[i]];                          /* Counts the frequency of every character in the file */
+
+  }
+
+  /* Use the index of the array as the char and the value of each index as the frequency when creating nodes */
+
   return 0;
 }
 
@@ -63,3 +86,4 @@ void help() {
 
   exit(0);
 }
+
