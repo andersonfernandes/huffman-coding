@@ -7,6 +7,8 @@ void help();
 int main(int argc, char const *argv[]) {
   FILE *file;
   char *src_filename, *dest_filename, option[3];
+  char *file_content;
+  size_t file_size;
 
   if(argc == 1) {
     help();
@@ -38,25 +40,26 @@ int main(int argc, char const *argv[]) {
       exit(1);
     }
 
-    char chr;
-
-    while((chr = fgetc(file)) != EOF) {
-      printf("%c", chr);
-    }
+    fseek(file, 0, SEEK_END);                             /* Set the pointer to the end of the file */
+    file_size = ftell(file);                              /* Return the position of the pointer on the file */
+    rewind(file);                                         /* Rollback the pointer to the beginning of thee file */
+    file_content = malloc((file_size + 1) * (sizeof(char)));
+    fread(file_content, sizeof(char), file_size, file);   /* Read the content of the file */
+    fclose(file);
+    file_content[file_size] = 0;
   }
 
-  fclose(file);
   return 0;
 }
 
 void help() {
   printf("Huffman Help\n\n");
 
-  printf("Usage: io [source_filename_path] [destination_filename_path] [options]\n\n");
+  printf("Usage: huffman [source_filename_path] [destination_filename_path] [options]\n\n");
 
   printf("Options:\n");
   printf("%s\n", "-c: Compress the source file to the destination file");
-  printf("%s\n", "-h: Decompress the source file to the destination file");
+  printf("%s\n", "-d: Decompress the source file to the destination file");
 
   exit(0);
 }
