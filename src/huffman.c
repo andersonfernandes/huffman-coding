@@ -1,19 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef struct node Node;
-
-struct node{
-
-  char item;
-  int frequency;
-  Node *next;
-  
-  Node *left;
-  Node *right;
-
-};
+#include "../inc/heap.h"
 
 void help();
 
@@ -23,6 +11,8 @@ int main(int argc, char const *argv[]) {
   char *file_content;
   size_t file_size;
   int i, frequency[256] = {0};
+  Heap* queue = create_heap(256);
+  Node* emptyNode = NULL;
   
 
   if(argc == 1) {
@@ -36,8 +26,8 @@ int main(int argc, char const *argv[]) {
       exit(1);
     }
 
-    src_filename = malloc(strlen(argv[1]) * sizeof(char));
-    dest_filename = malloc(strlen(argv[2]) * sizeof(char));
+    src_filename = (char*)malloc(strlen(argv[1]) * sizeof(char));
+    dest_filename = (char*)malloc(strlen(argv[2]) * sizeof(char));
 
     strcpy(src_filename, argv[1]);
     strcpy(dest_filename, argv[2]);
@@ -58,7 +48,7 @@ int main(int argc, char const *argv[]) {
     fseek(file, 0, SEEK_END);                             /* Set the pointer to the end of the file */
     file_size = ftell(file);                              /* Return the position of the pointer on the file */
     rewind(file);                                         /* Rollback the pointer to the beginning of thee file */
-    file_content = malloc((file_size + 1) * (sizeof(char)));
+    file_content = (char*)malloc((file_size + 1) * (sizeof(char)));
     fread(file_content, sizeof(char), file_size, file);   /* Read the content of the file */
     fclose(file);
     file_content[file_size] = 0;
@@ -69,6 +59,35 @@ int main(int argc, char const *argv[]) {
     ++frequency[file_content[i]];                          /* Counts the frequency of every character in the file */
 
   }
+
+  for(i = 0; i < 256; i++){
+    if(frequency[i] > 0){
+
+      enqueue(queue, create_node(i, frequency[i]));
+
+    }
+  }
+  /*
+  i = 0;
+
+  while(queue->size > 1){
+
+    if(i%2 == 0){
+      enqueue(queue, emptyNode);
+      emptyNode = create_node('*', 0);
+      emptyNode->left = dequeue(queue);
+      emptyNode->frequency += emptyNode->left->frequency;
+    }
+
+    else{
+      emptyNode->right = dequeue(queue);
+      emptyNode->frequency += emptyNode->right->frequency;
+    }
+
+    i++;
+
+  }
+  */
 
   /* Use the index of the array as the char and the value of each index as the frequency when creating nodes */
 
