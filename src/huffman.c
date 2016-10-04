@@ -12,7 +12,8 @@ int main(int argc, char const *argv[]) {
   size_t file_size;
   int i, frequency[256] = {0};
   Heap* queue = create_heap(256);
-  Node* emptyNode = NULL;
+  Node* bt = NULL;
+  
   
 
   if(argc == 1) {
@@ -20,18 +21,18 @@ int main(int argc, char const *argv[]) {
   } else {
     if(argc == 2 && strcmp(argv[1], "-help") == 0) {
       help();
-      return 0;
+      exit(0);
     } else if(argc != 4) {
       printf("Invalid arguments! See 'huffman -help' for more information. \n");
       exit(1);
     }
 
-    src_filename = (char*)malloc(strlen(argv[1]) * sizeof(char));
-    dest_filename = (char*)malloc(strlen(argv[2]) * sizeof(char));
+    src_filename = (char*)malloc(strlen(argv[2]) * sizeof(char));
+    dest_filename = (char*)malloc(strlen(argv[3]) * sizeof(char));
 
-    strcpy(src_filename, argv[1]);
-    strcpy(dest_filename, argv[2]);
-    strcpy(option, argv[3]);
+    strcpy(option, argv[1]);
+    strcpy(src_filename, argv[2]);
+    strcpy(dest_filename, argv[3]);
 
     if(strcmp(option, "-c") != 0 && strcmp(option, "-d") != 0) {
       printf("Invalid option! See 'huffman -help' for more information.\n");
@@ -63,33 +64,14 @@ int main(int argc, char const *argv[]) {
   for(i = 0; i < 256; i++){
     if(frequency[i] > 0){
 
-      enqueue(queue, create_node(i, frequency[i]));
+      enqueue(queue, create_node(i, frequency[i]));        /* Uses the index of the array as the char and the value of each index as the frequency when creating nodes */
 
     }
   }
-  /*
-  i = 0;
+  
+  bt = heap_to_tree(queue);
 
-  while(queue->size > 1){
-
-    if(i%2 == 0){
-      enqueue(queue, emptyNode);
-      emptyNode = create_node('*', 0);
-      emptyNode->left = dequeue(queue);
-      emptyNode->frequency += emptyNode->left->frequency;
-    }
-
-    else{
-      emptyNode->right = dequeue(queue);
-      emptyNode->frequency += emptyNode->right->frequency;
-    }
-
-    i++;
-
-  }
-  */
-
-  /* Use the index of the array as the char and the value of each index as the frequency when creating nodes */
+  
 
   return 0;
 }

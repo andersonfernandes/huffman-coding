@@ -23,4 +23,6 @@
 
   Node* create_node(char item, int frequency);
 
+  Node* heap_to_tree(Heap* heap);
+
 #endif

@@ -8,7 +8,6 @@ struct node{
 
   char item;
   int frequency;
-  Node *next;
   
   Node *left;
   Node *right;
@@ -103,10 +102,39 @@ Node* create_node(char item, int frequency){
   newNode->item = item;
   newNode->frequency = frequency;
 
-  newNode->next = NULL;
   newNode->left = NULL;
   newNode->right = NULL;
 
   return newNode;
+
+}
+
+Node* heap_to_tree(Heap* heap){
+
+  int i = 0;
+  Node* emptyNode = NULL;
+  Node* bt = NULL;
+
+  while(heap->size > 1){
+
+    if(i%2 == 0){
+      if(i != 0) enqueue(heap, emptyNode);
+      emptyNode = create_node('*', 0);
+      emptyNode->left = dequeue(heap);
+      emptyNode->frequency += emptyNode->left->frequency;
+    }
+
+    else{
+      emptyNode->right = dequeue(heap);
+      emptyNode->frequency += emptyNode->right->frequency;
+    }
+
+    i++;
+
+  }
+
+  bt = dequeue(heap);
+
+  return bt;
 
 }
