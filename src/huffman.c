@@ -12,8 +12,7 @@ int main(int argc, char const *argv[]) {
   size_t file_size;
   int i, frequency[256] = {0};
   Heap* queue = create_heap(256);
-  Node* bt = NULL;
-  
+  Node* bt = NULL;  
   
 
   if(argc == 1) {
@@ -63,15 +62,16 @@ int main(int argc, char const *argv[]) {
 
   for(i = 0; i < 256; i++){
     if(frequency[i] > 0){
-
+      
       enqueue(queue, create_node(i, frequency[i]));        /* Uses the index of the array as the char and the value of each index as the frequency when creating nodes */
-
+      
     }
   }
   
   bt = heap_to_tree(queue);
 
-  
+  //print_tree(bt);
+  /* To do: transform binary tree "bt" into the coding for each character */
 
   return 0;
 }
@@ -79,7 +79,7 @@ int main(int argc, char const *argv[]) {
 void help() {
   printf("Huffman Help\n\n");
 
-  printf("Usage: huffman [source_filename_path] [destination_filename_path] [options]\n\n");
+  printf("Usage: huffman [options] [source_filename_path] [destination_filename_path]\n\n");
 
   printf("Options:\n");
   printf("%s\n", "-c: Compress the source file to the destination file");

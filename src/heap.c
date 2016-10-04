@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../inc/heap.h"
-
-typedef struct node Node;
-
+#define DEBUG 0
 struct node{
 
   char item;
@@ -52,6 +50,7 @@ Node* value_of(Heap *heap, int i) {
 }
 
 void enqueue(Heap *heap, Node *value) {
+
   if (heap->size >= heap->max_size) {
     printf("Heap is full!");
   } else {
@@ -59,7 +58,7 @@ void enqueue(Heap *heap, Node *value) {
     int key_index = heap->size;
     int parent_index = get_parent_index(heap, heap->size);
 
-    while (parent_index >= 1 && heap->data[key_index]->frequency > heap->data[parent_index]->frequency) {
+    while (parent_index >= 1 && heap->data[key_index]->frequency < heap->data[parent_index]->frequency) {
       swap(&heap->data[key_index], &heap->data[parent_index]);
       key_index = parent_index;
       parent_index = get_parent_index(heap, key_index);
@@ -95,7 +94,7 @@ void min_heapify(Heap *heap, int i) {
     min_heapify(heap, lowest);
   }
 }
-
+/* Recieves an item and its frequency, returns nodes */
 Node* create_node(char item, int frequency){
 
   Node* newNode = (Node*)malloc(sizeof(Node));
@@ -108,33 +107,44 @@ Node* create_node(char item, int frequency){
   return newNode;
 
 }
-
+/* Returns a huffman tree, requires a min heap */
 Node* heap_to_tree(Heap* heap){
 
   int i = 0;
-  Node* emptyNode = NULL;
   Node* bt = NULL;
 
-  while(heap->size > 1){
+  while(heap->size > 0){
 
     if(i%2 == 0){
-      if(i != 0) enqueue(heap, emptyNode);
-      emptyNode = create_node('*', 0);
-      emptyNode->left = dequeue(heap);
-      emptyNode->frequency += emptyNode->left->frequency;
+      if(i != 0) enqueue(heap, bt);
+      bt = create_node('*', 0);
+      bt->left = dequeue(heap);
+      bt->frequency += bt->left->frequency;
     }
 
     else{
-      emptyNode->right = dequeue(heap);
-      emptyNode->frequency += emptyNode->right->frequency;
+      bt->right = dequeue(heap);
+      bt->frequency += bt->right->frequency;
     }
 
     i++;
-
   }
 
-  bt = dequeue(heap);
-
   return bt;
+
+}
+/* Test function to print a binary tree */
+void print_tree(Node* bt){
+
+  if(bt == NULL) return;
+  
+  printf("%c = %d\n", bt->item, bt->frequency);
+
+  printf("left of %c = %d: \n", bt->item, bt->frequency);
+  print_tree(bt->left);
+  printf("right of %c = %d: \n", bt->item, bt->frequency);
+  print_tree(bt->right);
+ 
+  return;
 
 }

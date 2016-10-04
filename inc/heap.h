@@ -25,4 +25,6 @@
 
   Node* heap_to_tree(Heap* heap);
 
+  void print_tree(Node* bt);
+
 #endif
