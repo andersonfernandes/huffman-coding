@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../inc/heap.h"
-#define DEBUG 0
+
 struct node{
 
   char item;

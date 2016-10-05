@@ -1,9 +1,9 @@
-OBJS = src/huffman.c
-DEPS = src/heap.c
-DEPS_HEAP = inc/heap.h
+OBJS = src/huffman.c src/heap.c
+DEPS = inc/heap.h
+
 
 compile:
-	gcc $(OBJS) $(DEPS) $(DEPS_HEAP) -o huffman
+	gcc $(OBJS) $(DEPS) -o huffman
 
 clean:
 	rm -f huffman
