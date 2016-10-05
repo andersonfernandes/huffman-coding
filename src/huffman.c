@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../inc/heap.h"
 #include "compress.c"
+#include "decompress.c"
 
 void help();
 
@@ -54,6 +55,8 @@ int main(int argc, char const *argv[]) {
 
   if(strcmp(option, "-c") == 0){
     compress(file_content, file_size);
+  } else {
+    decompress(file_content, file_size);
   }
   return 0;
 }
