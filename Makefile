@@ -3,7 +3,7 @@ DEPS = inc/heap.h
 
 
 compile:
-	gcc $(OBJS) $(DEPS) -o huffman
+	gcc $(OBJS) $(DEPS) -o huffman -lm
 
 clean:
 	rm -f huffman
