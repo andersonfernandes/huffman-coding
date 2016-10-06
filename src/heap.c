@@ -45,10 +45,6 @@ int get_right_index(Heap *heap, int i) {
   return 2*i + 1;
 }
 
-Node* value_of(Heap *heap, int i) {
-  return heap->data[i];
-}
-
 void enqueue(Heap *heap, Node *value) {
 
   if (heap->size >= heap->max_size) {
@@ -133,7 +129,33 @@ Node* heap_to_tree(Heap* heap){
   return bt;
 
 }
-/* Test function to print a binary tree */
+
+Node* get_left_tree(Node* bt){
+
+  return bt->left;
+
+}
+
+Node* get_right_tree(Node* bt){
+
+  return bt->right;
+
+}
+
+char get_tree_item(Node* bt){
+
+  return bt->item;
+
+}
+
+// Checks is "bt" is a leaf
+int is_leaf(Node* bt){
+
+  if(bt->left == NULL && bt->right == NULL) return 1;
+  else return 0;
+
+}
+// Test function to print a binary tree 
 void print_tree(Node* bt){
 
   if(bt == NULL) return;
