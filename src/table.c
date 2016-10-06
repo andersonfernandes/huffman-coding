@@ -8,14 +8,13 @@ int ind = 0;
 
 struct table{
 
-  char item;
   char binary[9];  
 
 };
 
 Table* create_table(int size){
 
-  Table* table = (Table*)malloc(sizeof(Table)*size);
+  Table* table = (Table*)calloc(size, sizeof(Table));
   return table;
 
 }
@@ -28,8 +27,8 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
 
   if(is_leaf(bt)){
     
-    table[ind].item = get_tree_item(bt);
-    strcpy(table[ind].binary, code);
+    //take the char as the array index and the code as "binary"
+    strcpy(table[get_tree_item(bt)].binary, code);
     ++ind;
     return;
 
@@ -47,8 +46,8 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
 void print_table(Table* table, int size){
   int i;
   for(i = 0; i < size; i++){
-
-    printf("%c = %s\n", table[i].item, table[i].binary);
+    if(strcmp(table[i].binary, "") != 0)
+      printf("%c = %s\n", i, table[i].binary);
 
   }
 
