@@ -25,6 +25,14 @@
 
   Node* heap_to_tree(Heap* heap);
 
+  Node* get_left_tree(Node* bt);
+
+  Node* get_right_tree(Node* bt);
+
+  char get_tree_item(Node* bt);
+
+  int is_leaf(Node* bt);
+
   void print_tree(Node* bt);
 
 #endif
