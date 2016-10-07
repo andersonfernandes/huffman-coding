@@ -28,14 +28,27 @@ char* decompress(unsigned char *file_content, size_t file_size) {
   }
   tree_str[tree_size] = '\0';
 
-  printf("Trash: %d\n", trash_size);
-  printf("Tree Size: %d\n", tree_size);
-  printf("Tree: %s\n", tree_str);
-
   i = 0;
   Node *tree = str_to_tree(tree_str, &i);
+  Node *aux_tree = tree;
 
-  print_tree(tree);
+  /* Percorre o texto até o penúltimo byte */
+  for(i = tree_size + 2; i < file_size - 1; ++i) {
+    for(j = 7; j >= 0; --j) {
+      if(is_bit_i_set(file_content[i], j)) {
+        aux_tree = get_right_tree(aux_tree);
+      } else {
+        aux_tree = get_left_tree(aux_tree);
+      }
 
-	return NULL;
+      if(is_leaf(aux_tree)) {
+        printf("%c", get_tree_item(aux_tree));
+        aux_tree = tree;
+      }
+    }
+  }
+
+  printf("\n");
+
+  return NULL;
 }
