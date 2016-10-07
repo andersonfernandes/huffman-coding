@@ -28,5 +28,14 @@ char* decompress(unsigned char *file_content, size_t file_size) {
   }
   tree_str[tree_size] = '\0';
 
+  printf("Trash: %d\n", trash_size);
+  printf("Tree Size: %d\n", tree_size);
+  printf("Tree: %s\n", tree_str);
+
+  i = 0;
+  Node *tree = str_to_tree(tree_str, &i);
+
+  print_tree(tree);
+
 	return NULL;
 }

@@ -6,7 +6,7 @@ struct node{
 
   char item;
   int frequency;
-  
+
   Node *left;
   Node *right;
 
@@ -130,6 +130,28 @@ Node* heap_to_tree(Heap* heap){
 
 }
 
+Node* create_tree_node(char item, Node *left, Node *right) {
+  Node *new = (Node *) malloc(sizeof(Node));
+  new->item = item;
+  new->left = left;
+  new->right = right;
+
+  return new;
+}
+
+Node* str_to_tree(char* str, int* i){
+  if(str[*i] == '*'){
+    ++(*i);
+    Node* left = str_to_tree(str, i);
+    ++(*i);
+    return create_tree_node('*', left, str_to_tree(str, i));
+  } else if(str[*i] == '\\'){
+    ++(*i);
+    return create_tree_node(str[*i], NULL, NULL);
+  }
+  return create_tree_node(str[*i], NULL, NULL);
+}
+
 Node* get_left_tree(Node* bt){
 
   return bt->left;
@@ -155,18 +177,18 @@ int is_leaf(Node* bt){
   else return 0;
 
 }
-// Test function to print a binary tree 
+// Test function to print a binary tree
 void print_tree(Node* bt){
 
   if(bt == NULL) return;
-  
+
   printf("%c = %d\n", bt->item, bt->frequency);
 
   printf("left of %c = %d: \n", bt->item, bt->frequency);
   print_tree(bt->left);
   printf("right of %c = %d: \n", bt->item, bt->frequency);
   print_tree(bt->right);
- 
+
   return;
 
 }

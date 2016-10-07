@@ -35,4 +35,6 @@
 
   void print_tree(Node* bt);
 
+  Node* str_to_tree(char *str, int *i);
+
 #endif
