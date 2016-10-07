@@ -25,7 +25,7 @@ char* compress(char *file_content, size_t file_size){
   
   bt = heap_to_tree(queue);
   free(queue);
-  //print_tree(bt);
+ // print_tree(bt);
 
   Table* table = create_table(256);
   //printf("\n%d\n\n", 256);

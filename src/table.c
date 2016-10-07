@@ -4,18 +4,54 @@
 #include "../inc/heap.h"
 #include "../inc/table.h"
 
-int ind = 0;
+struct bit_node{
+
+  char bit;
+  BitNode* next;
+
+};
 
 struct table{
 
-  char binary[9];  
+  BitNode* first;
+  BitNode* last;   
 
 };
 
 Table* create_table(int size){
 
-  Table* table = (Table*)calloc(size, sizeof(Table));
+  int i;
+  Table* table = (Table*)malloc(size*sizeof(Table));
+  for(i = 0; i < size; i++){
+
+    table[i].first = NULL;
+    table[i].last = NULL;
+
+  }
   return table;
+
+}
+
+BitNode* create_bit_node(char item){
+
+  BitNode* newNode = (BitNode*)malloc(sizeof(BitNode));
+  newNode->bit = item;
+  newNode->next = NULL;
+  return newNode;
+
+}
+
+void add_to_list(Table* list, char position, char bit){
+
+  BitNode* newNode = create_bit_node(bit);
+  if(list[position].first == NULL){
+    list[position].first = newNode;
+    list[position].last = newNode;
+  }
+  else{
+    list[position].last->next = newNode;
+    list[position].last = newNode;
+  }
 
 }
 
@@ -28,8 +64,10 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
   if(is_leaf(bt)){
     
     //take the char as the array index and the code as "binary"
-    strcpy(table[get_tree_item(bt)].binary, code);
-    ++ind;
+    int i;
+    for(i = 0; i < strlen(code); i++){
+      add_to_list(table, get_tree_item(bt), code[i]);
+    }
     return;
 
   }
@@ -46,8 +84,18 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
 void print_table(Table* table, int size){
   int i;
   for(i = 0; i < size; i++){
-    if(strcmp(table[i].binary, "") != 0)
-      printf("%c = %s\n", i, table[i].binary);
+    if(table[i].first != NULL){
+
+      BitNode* second = table[i].first;
+      printf("%c", i);
+      while(second != NULL){
+
+        printf("%c", second->bit);
+        second = second->next;
+
+      }
+      printf("\n");
+    }
 
   }
 
