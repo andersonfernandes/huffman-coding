@@ -33,6 +33,10 @@
 
   int is_leaf(Node* bt);
 
+  int calculate_tree_size(Node* bt, int size);
+
   void print_tree(Node* bt);
+
+  void print_tree_in_file(Node* bt, FILE* dest_file);
 
 #endif

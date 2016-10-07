@@ -80,6 +80,33 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
   return;
 
 }
+
+int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* table){
+  
+  int i, j = 7;
+  BitNode* current = NULL;
+  unsigned char byte;
+
+  for(i = 0; i < file_size; i++){
+    current = table[file_content[i]].first;
+    for(; j >= 0; j--){
+      if(current->next == NULL) break;
+      if(current->bit == 1) byte |= 1<<j;
+      current = current->next;
+      if(j == 0){
+        //putc(byte, dest_file);
+        if(current != NULL){
+          j = 7;
+          byte = 0;
+        }
+      }
+    }
+
+  }
+
+  return (8-j);
+}
+
 // Test function to print huff binary table with the huff binaries each char in the file
 void print_table(Table* table, int size){
   int i;
@@ -87,7 +114,7 @@ void print_table(Table* table, int size){
     if(table[i].first != NULL){
 
       BitNode* second = table[i].first;
-      printf("%c", i);
+      printf("%c = ", i);
       while(second != NULL){
 
         printf("%c", second->bit);

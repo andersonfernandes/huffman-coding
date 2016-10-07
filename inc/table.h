@@ -2,6 +2,8 @@
 #define TABLE_H
 
   #include "heap.h"
+  #include <stdlib.h>
+  #include <stdio.h>
 
   typedef struct bit_node BitNode;
 
@@ -14,6 +16,8 @@
   void add_to_list(Table* list, char position, char bit);
 
   void fill_table(Node* bt, Table* table, char* code, char* string);
+
+  void write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* table);
 
   void print_table(Table* table, int size);
 
