@@ -9,7 +9,7 @@ int is_bit_i_set(unsigned char c, int i) {
 	return mask & c;
 }
 
-char* decompress(unsigned char *file_content, size_t file_size, char *dest_filename) {
+void decompress(unsigned char *file_content, size_t file_size, char *dest_filename) {
   int trash_size = 0, tree_size = file_content[1]; /* tree_size está incompleto aqui, será preciso calcular os bits restantes do primeiro byte */
   unsigned char first_byte = file_content[0];
   unsigned char second_byte = file_content[1];
@@ -50,7 +50,6 @@ char* decompress(unsigned char *file_content, size_t file_size, char *dest_filen
     }
   }
 
-
   for(i = 7; i >= trash_size; --i) {
     if(is_bit_i_set(file_content[file_size - 1], i)) {
       aux_tree = get_right_tree(aux_tree);
@@ -60,9 +59,9 @@ char* decompress(unsigned char *file_content, size_t file_size, char *dest_filen
 
     if(is_leaf(aux_tree)) {
       putc(get_tree_item(aux_tree), dest_file);
+      aux_tree = tree;
     }
   }
-  
+
   fclose(dest_file);
-  return NULL;
 }
