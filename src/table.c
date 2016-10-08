@@ -68,6 +68,7 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
     for(i = 0; i < strlen(code); i++){
       add_to_list(table, get_tree_item(bt), code[i]);
     }
+
     return;
 
   }
@@ -91,20 +92,46 @@ int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* 
     current = table[file_content[i]].first;
     //printf("%c", file_content[i]);
     for(; j >= 0; j--){
-      if(current->next == NULL) break;
-      if(current->bit == 1) byte |= 1<<j;
+      //printf("%d", j);
+      //printf("%c", current->bit);
+      if(current->bit == '1'){        
+        (byte |= 1<<j);
+      }
+
+      //printf("%c", current->bit);
+      if(current->next == NULL){
+        if(i == file_size-1){
+          putc(byte, dest_file);
+          //printf("\n");
+          //printf("%d\n", byte);
+          break;
+        }
+        else if(j == 0){
+          putc(byte, dest_file);
+          //printf("\n");
+          //printf("%d\n", byte);
+          j = 8;
+          byte = 0;
+        }
+        
+        j--;
+        break;
+      }
       current = current->next;
       if(j == 0){
         putc(byte, dest_file);
-        if(current != NULL){
-          j = 7;
-          byte = 0;
-        }
+        //printf("\n");
+        //printf("%d\n", byte);
+
+        j = 8;
+        byte = 0;
+        
       }
     }
   }
-  printf("\n%d\n", j);
-  return (8-j);
+
+  //printf("\n%d\n", j);
+  return j;
 }
 
 // Test function to print huff binary table with the huff binaries each char in the file
