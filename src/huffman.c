@@ -9,7 +9,7 @@ void help();
 int main(int argc, char const *argv[]) {
   FILE *file;
   char *src_filename, *dest_filename, option[3];
-  char *file_content;
+  unsigned char *file_content;
   size_t file_size;
   
 
@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]) {
     fseek(file, 0, SEEK_END);                             /* Set the pointer to the end of the file */
     file_size = ftell(file);                              /* Return the position of the pointer on the file */
     rewind(file);                                         /* Rollback the pointer to the beginning of thee file */
-    file_content = (char*)malloc((file_size + 1) * (sizeof(char)));
+    file_content = (unsigned char*)malloc((file_size + 1) * (sizeof(unsigned char)));
     fread(file_content, sizeof(char), file_size, file);   /* Read the content of the file */
     fclose(file);
     file_content[file_size] = 0;

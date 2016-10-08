@@ -41,7 +41,7 @@ BitNode* create_bit_node(char item){
 
 }
 
-void add_to_list(Table* list, char position, char bit){
+void add_to_list(Table* list, unsigned char position, char bit){
 
   BitNode* newNode = create_bit_node(bit);
   if(list[position].first == NULL){
@@ -82,15 +82,15 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
 
 }
 
-int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* table){
+int write_in_file(unsigned char *file_content, size_t file_size, FILE *dest_file, Table *table){
   
   int i, j = 7;
   BitNode* current = NULL;
   unsigned char byte;
-
+  
   for(i = 0; i < file_size; i++){
     current = table[file_content[i]].first;
-    //printf("%c", file_content[i]);
+    printf("%c", file_content[i]);
     for(; j >= 0; j--){
       //printf("%d", j);
       //printf("%c", current->bit);
@@ -100,15 +100,16 @@ int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* 
 
       //printf("%c", current->bit);
       if(current->next == NULL){
+        //printf("\n");
         if(i == file_size-1){
           putc(byte, dest_file);
-          //printf("\n");
+          //printf("\n\n");
           //printf("%d\n", byte);
           break;
         }
         else if(j == 0){
           putc(byte, dest_file);
-          //printf("\n");
+          //printf("\n\n");
           //printf("%d\n", byte);
           j = 8;
           byte = 0;
@@ -120,17 +121,15 @@ int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* 
       current = current->next;
       if(j == 0){
         putc(byte, dest_file);
-        //printf("\n");
+        //printf("\n\n");
         //printf("%d\n", byte);
-
         j = 8;
         byte = 0;
         
       }
     }
   }
-
-  //printf("\n%d\n", j);
+  printf("%d\n", i);
   return j;
 }
 
@@ -154,5 +153,23 @@ void print_table(Table* table, int size){
   }
 
   return;
+
+}
+//test function
+void create_temp_file(unsigned char* file_content, size_t file_size, Table* table){
+  int i;
+  BitNode* current;
+  FILE* temp = fopen("temp.txt", "w");
+  for(i = 0; i < file_size; i++){
+    current = table[file_content[i]].first;
+    while(current != NULL){
+
+      putc(current->bit, temp);
+      current = current->next;
+
+    }
+    putc(' ', temp);
+  }
+  fclose(temp);
 
 }
