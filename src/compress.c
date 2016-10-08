@@ -47,7 +47,9 @@ char* compress(unsigned char *file_content, size_t file_size, char *dest_filenam
   putc(byte2, dest_file);                                                 /* Prints second byte in the destination file */
 
   print_tree_in_file(bt, dest_file);                                      /* Prints the tree in the destination file */
-
+  
+  free_tree(bt);
+  
   trash_size = write_in_file(file_content, file_size, dest_file, table);  /* Prints the compressed content and returns the trash size */
 
   free(table);

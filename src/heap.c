@@ -222,3 +222,17 @@ void print_tree_in_file(Node* bt, FILE *dest_file){
   return;
 
 }
+
+void free_tree(Node* bt){
+    
+  if(bt == NULL){
+    return;
+  }
+    
+  free_tree(bt->left);
+  free_tree(bt->right);
+
+  free(bt);
+
+  return;  
+}

@@ -43,4 +43,6 @@
 
   void print_tree_in_file(Node* bt, FILE* dest_file);
 
+  void free_tree(Node* bt);
+
 #endif

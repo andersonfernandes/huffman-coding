@@ -63,5 +63,6 @@ void decompress(unsigned char *file_content, size_t file_size, char *dest_filena
     }
   }
 
+  free_tree(tree);
   fclose(dest_file);
 }
