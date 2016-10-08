@@ -89,20 +89,21 @@ int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* 
 
   for(i = 0; i < file_size; i++){
     current = table[file_content[i]].first;
+    //printf("%c", file_content[i]);
     for(; j >= 0; j--){
       if(current->next == NULL) break;
       if(current->bit == 1) byte |= 1<<j;
       current = current->next;
       if(j == 0){
-        //putc(byte, dest_file);
+        putc(byte, dest_file);
         if(current != NULL){
           j = 7;
           byte = 0;
         }
       }
     }
-
   }
+  printf("\n%d\n", j);
   return (8-j);
 }
 

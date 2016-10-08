@@ -30,10 +30,10 @@ char* compress(char *file_content, size_t file_size, char *dest_filename){
   bt = heap_to_tree(queue);
   tree_size = calculate_tree_size(bt, 0);
   free(queue);
-  print_tree(bt);
+  //print_tree(bt);
 
   Table* table = create_table(256);
-  printf("\n%d\n\n", tree_size);
+  //printf("\n%d\n\n", tree_size);
 
   char* empty_string = (char*)calloc(9, sizeof(char));      /* Empty string used to allocate the memory space needed for the max huff binary code of a letter */
 
