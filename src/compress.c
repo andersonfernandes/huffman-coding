@@ -4,36 +4,59 @@
 #include "../inc/heap.h"
 #include "../inc/table.h"
 
-char* compress(char *file_content, size_t file_size){
+char* compress(unsigned char *file_content, size_t file_size, char *dest_filename){
   int i, frequency[256] = {0};
-  Heap* queue = create_heap(256);
-  Node* bt = NULL;  
-  int tree_letters = 0;
+  Heap* heap = create_heap(256);
+  Node* bt = NULL;
+  int tree_size, trash_size;
+  unsigned char byte1;
+  unsigned char byte2;
 
-  
   for(i = 0; i < file_size; i++){
-
-    ++frequency[file_content[i]];                          /* Counts the frequency of every character in the file */
+    
+    ++frequency[file_content[i]];                                         /* Counts the frequency of every character in the file */
 
   }
-
+  
   for(i = 0; i < 256; i++){
     if(frequency[i] > 0){
-      tree_letters++;
-      enqueue(queue, create_node(i, frequency[i]));        /* Uses the index of the array as the char and the value of each index as the frequency when creating nodes */
-      
+
+      enqueue(heap, create_node(i, frequency[i]));                        /* Uses the index of the array as the char and the value of each index as the frequency when creating nodes */
+
     }
   }
-  Table* table = create_table(tree_letters);
-  bt = heap_to_tree(queue);
-  //print_tree(bt);
 
-  //printf("\n%d\n", tree_letters);
+  bt = heap_to_tree(heap);                                                /* Makes the huff tree out of a heap */
+  tree_size = calculate_tree_size(bt, 0);                                 /* Calculates the number of nodes in the huff tree */
+  free(heap);
 
-  char empty_string[9] = "";  //empty string used to allocate the memory space needed for the max huff binary code of a letter
+  Table* table = create_table(256);                                       /* Creates the table that will contain the value of each bit of the characters present in the text, according to the huff tree */
 
-  fill_table(bt, table, "", empty_string);                 /* Transforms binary tree "bt" into the coding for each character */
+  char* empty_string = (char*)calloc(17, sizeof(char));                   /* Empty string used to allocate the memory space needed for the average huff binary code of a letter */
 
-  //print_table(table, tree_letters);
+  fill_table(bt, table, "", empty_string);                                /* Transforms binary tree "bt" into the coding for each character */
+
+  free(empty_string);
+
+  byte1 = (tree_size>>8);                                                 /* Sets first three bits of the tree size in the first byte */
+  byte2 = tree_size;                                                      /* Sets the remainder of the tree size in the second byte */
+
+  FILE *dest_file = fopen(dest_filename, "w");                            /* Creates the destination file */
+
+  putc(0, dest_file);                                                     /* Prints first byte in the destination file as 0, since we don't have the trash size yet */
+  putc(byte2, dest_file);                                                 /* Prints second byte in the destination file */
+
+  print_tree_in_file(bt, dest_file);                                      /* Prints the tree in the destination file */
+
+  trash_size = write_in_file(file_content, file_size, dest_file, table);  /* Prints the compressed content and returns the trash size */
+
+  free(table);
+  
+  rewind(dest_file);                                                      /* Rewinds the dest_file pointer to the beginning of the destination file */
+
+  trash_size = trash_size<<5;                                             /* Sets trash size to the first three bits */ 
+  byte1 |= trash_size;                                                    /* Adds trash size to the start of the first byte */
+  fprintf(dest_file, "%c", byte1);                                        /* Prints first byte in the destination file */
+  fclose(dest_file);
   
 }

@@ -1,5 +1,7 @@
 #ifndef HEAP_H
 #define HEAP_H
+#include <stdlib.h>
+#include <stdio.h>
 
   typedef struct node Node;
 
@@ -33,8 +35,12 @@
 
   int is_leaf(Node* bt);
 
+  int calculate_tree_size(Node* bt, int size);
+
   void print_tree(Node* bt);
 
   Node* str_to_tree(char *str, int *i);
+
+  void print_tree_in_file(Node* bt, FILE* dest_file);
 
 #endif

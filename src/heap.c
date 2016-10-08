@@ -177,6 +177,21 @@ int is_leaf(Node* bt){
   else return 0;
 
 }
+
+int calculate_tree_size(Node* bt, int size){
+
+  ++size;
+  if(is_leaf(bt)){
+    if(bt->item == '*' || bt->item == '\\') size++;
+    return size;
+  }
+  size = calculate_tree_size(bt->left, size);
+  size = calculate_tree_size(bt->right, size);
+
+  return size;
+
+}
+
 // Test function to print a binary tree
 void print_tree(Node* bt){
 
@@ -188,6 +203,21 @@ void print_tree(Node* bt){
   print_tree(bt->left);
   printf("right of %c = %d: \n", bt->item, bt->frequency);
   print_tree(bt->right);
+
+  return;
+
+}
+
+void print_tree_in_file(Node* bt, FILE *dest_file){
+
+  if(bt == NULL) return;
+  if((bt->item == '*' || bt->item == '\\') && is_leaf(bt)){
+    putc('\\', dest_file);
+  }
+  putc(bt->item, dest_file);
+
+  print_tree_in_file(bt->left, dest_file);
+  print_tree_in_file(bt->right, dest_file);
 
   return;
 
