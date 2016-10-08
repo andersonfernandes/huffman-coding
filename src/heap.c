@@ -234,5 +234,5 @@ void free_tree(Node* bt){
 
   free(bt);
 
-  return;  
+   
 }
