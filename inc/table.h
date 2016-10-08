@@ -21,6 +21,4 @@
 
   void print_table(Table* table, int size);
 
-  void create_temp_file(unsigned char *file_content, size_t file_size, Table* table);
-
 #endif

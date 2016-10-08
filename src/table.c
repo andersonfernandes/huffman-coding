@@ -7,21 +7,21 @@
 struct bit_node{
 
   char bit;
-  BitNode* next;
+  BitNode *next;
 
 };
 
 struct table{
 
-  BitNode* first;
-  BitNode* last;   
+  BitNode *first;
+  BitNode *last;   
 
 };
-
-Table* create_table(int size){
+// Allocates an empty table, recieves the size of the table (the table is an array of lists)
+Table *create_table(int size){
 
   int i;
-  Table* table = (Table*)malloc(size*sizeof(Table));
+  Table *table = (Table*)malloc(size*sizeof(Table));
   for(i = 0; i < size; i++){
 
     table[i].first = NULL;
@@ -32,18 +32,22 @@ Table* create_table(int size){
 
 }
 
-BitNode* create_bit_node(char item){
+// Allocates BitNodes that are used in the tables
+// Recieves a char, which is the value of the BitNode
+BitNode *create_bit_node(char item){
 
-  BitNode* newNode = (BitNode*)malloc(sizeof(BitNode));
+  BitNode *newNode = (BitNode*)malloc(sizeof(BitNode));
   newNode->bit = item;
   newNode->next = NULL;
   return newNode;
 
 }
 
-void add_to_list(Table* list, unsigned char position, char bit){
+// Adds BitNodes to a list
+// Recieves the table, the position of the list in the table and the char to be added
+void add_to_list(Table *list, unsigned char position, char bit){
 
-  BitNode* newNode = create_bit_node(bit);
+  BitNode *newNode = create_bit_node(bit);
   if(list[position].first == NULL){
     list[position].first = newNode;
     list[position].last = newNode;
@@ -55,18 +59,18 @@ void add_to_list(Table* list, unsigned char position, char bit){
 
 }
 
-// Function that sets the huff binaries of each char present in the file
-// Recieves a binary tree, a table, a code and a string(that should be both empty strings)
-void fill_table(Node* bt, Table* table, char* next_binary, char* code){
+// Function that sets the table of "binaries" of each char present in the file
+// Recieves a binary tree, a table, the next character in the code(that should be an empty string) and a code(that should also be an empty string)
+void fill_table(Node *bt, Table *table, char *next_binary, char *code){
 
   strcat(code, next_binary);
 
   if(is_leaf(bt)){
     
-    //take the char as the array index and the code as "binary"
     int i;
+    //take the char as the array index and code as the "binary" of said char
     for(i = 0; i < strlen(code); i++){
-      add_to_list(table, get_tree_item(bt), code[i]);
+      add_to_list(table, get_tree_item(bt), code[i]);//sets the table char by char of the code with BitNodes
     }
 
     return;
@@ -82,64 +86,61 @@ void fill_table(Node* bt, Table* table, char* next_binary, char* code){
 
 }
 
+// Writes the coded chars in the destination file and returns the trash size
+// Recieves the origin file content, the origin file size, a pointer to the destination file and the table with the "binaries" of each char in the origin file
 int write_in_file(unsigned char *file_content, size_t file_size, FILE *dest_file, Table *table){
   
   int i, j = 7;
-  BitNode* current = NULL;
+  BitNode *current = NULL;
   unsigned char byte;
   
   for(i = 0; i < file_size; i++){
+    
     current = table[file_content[i]].first;
-    printf("%c", file_content[i]);
+    
     for(; j >= 0; j--){
-      //printf("%d", j);
-      //printf("%c", current->bit);
+
       if(current->bit == '1'){        
         (byte |= 1<<j);
       }
 
-      //printf("%c", current->bit);
       if(current->next == NULL){
-        //printf("\n");
         if(i == file_size-1){
           putc(byte, dest_file);
-          //printf("\n\n");
-          //printf("%d\n", byte);
           break;
         }
         else if(j == 0){
           putc(byte, dest_file);
-          //printf("\n\n");
-          //printf("%d\n", byte);
           j = 8;
           byte = 0;
         }
-        
         j--;
         break;
       }
+      
       current = current->next;
+
       if(j == 0){
         putc(byte, dest_file);
-        //printf("\n\n");
-        //printf("%d\n", byte);
         j = 8;
         byte = 0;
         
       }
     }
   }
-  printf("%d\n", i);
+
   return j;
 }
 
 // Test function to print huff binary table with the huff binaries each char in the file
-void print_table(Table* table, int size){
+void print_table(Table *table, int size){
   int i;
+  BitNode *second;
   for(i = 0; i < size; i++){
     if(table[i].first != NULL){
 
-      BitNode* second = table[i].first;
+      second = table[i].first;
+
       printf("%c = ", i);
       while(second != NULL){
 
@@ -153,23 +154,5 @@ void print_table(Table* table, int size){
   }
 
   return;
-
-}
-//test function
-void create_temp_file(unsigned char* file_content, size_t file_size, Table* table){
-  int i;
-  BitNode* current;
-  FILE* temp = fopen("temp.txt", "w");
-  for(i = 0; i < file_size; i++){
-    current = table[file_content[i]].first;
-    while(current != NULL){
-
-      putc(current->bit, temp);
-      current = current->next;
-
-    }
-    putc(' ', temp);
-  }
-  fclose(temp);
 
 }
