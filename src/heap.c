@@ -185,12 +185,13 @@ void print_tree(Node* bt){
 
 }
 
-void print_tree_in_file(Node* bt, FILE* dest_file){
+void print_tree_in_file(Node* bt, FILE *dest_file){
 
   if(bt == NULL) return;
-  
-  if(bt->item == '*' || bt->item == '\\') putc(dest_file, '\\')
-  putc(dest_file, bt->item);
+  if(bt->item == '*' || bt->item == '\\'){
+    putc('\\', dest_file);
+  }
+  putc(bt->item, dest_file);
 
   print_tree(bt->left);
   print_tree(bt->right);

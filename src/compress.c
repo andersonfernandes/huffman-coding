@@ -11,6 +11,7 @@ char* compress(char *file_content, size_t file_size, char *dest_filename){
   int tree_size = 0; 
   unsigned char byte1;
   unsigned char byte2;
+  unsigned char byte;
 
   for(i = 0; i < file_size; i++){
 
@@ -45,17 +46,17 @@ char* compress(char *file_content, size_t file_size, char *dest_filename){
   byte1 = (tree_size>>8);
   byte2 = tree_size;
 
-  FILE* dest_file = fopen(dest_filename, "w");
+  FILE *dest_file = fopen(dest_filename, "w");
 
-  putc(dest_file, 0);
-  putc(dest_file, byte2);
+  putc(0, dest_file);
+  putc(byte2, dest_file);
   print_tree_in_file(bt, dest_file);
   int trash = write_in_file(file_content, file_size, dest_file, table);
   rewind(dest_file);
 
   trash = trash<<5;
   byte1 |= trash;
-  fprintf(dest_file, "%c", byte);
+  fprintf(dest_file, "%c", byte1);
 
   fclose(dest_file);
   

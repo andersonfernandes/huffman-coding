@@ -103,7 +103,6 @@ int write_in_file(char *file_content, size_t file_size, FILE *dest_file, Table* 
     }
 
   }
-
   return (8-j);
 }
 

@@ -1,5 +1,7 @@
 #ifndef HEAP_H
 #define HEAP_H
+#include <stdlib.h>
+#include <stdio.h>
 
   typedef struct node Node;
 
