@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../inc/compress.h"
 #include "../inc/heap.h"
+#include "../inc/huffman_tree.h"
 #include "../inc/table.h"
 
-char* compress(unsigned char *file_content, size_t file_size, char *dest_filename){
+void compress(unsigned char *file_content, long int file_size, char *dest_filename) {
   int i, frequency[256] = {0};
   Heap* heap = create_heap(256);
   Node* bt = NULL;
@@ -13,11 +15,11 @@ char* compress(unsigned char *file_content, size_t file_size, char *dest_filenam
   unsigned char byte2;
 
   for(i = 0; i < file_size; i++){
-    
+
     ++frequency[file_content[i]];                                         /* Counts the frequency of every character in the file */
 
   }
-  
+
   for(i = 0; i < 256; i++){
     if(frequency[i] > 0){
 
@@ -47,18 +49,18 @@ char* compress(unsigned char *file_content, size_t file_size, char *dest_filenam
   putc(byte2, dest_file);                                                 /* Prints second byte in the destination file */
 
   print_tree_in_file(bt, dest_file);                                      /* Prints the tree in the destination file */
-  
+
   free_tree(bt);
-  
+
   trash_size = write_in_file(file_content, file_size, dest_file, table);  /* Prints the compressed content and returns the trash size */
 
   free(table);
-  
+
   rewind(dest_file);                                                      /* Rewinds the dest_file pointer to the beginning of the destination file */
 
-  trash_size = trash_size<<5;                                             /* Sets trash size to the first three bits */ 
+  trash_size = trash_size<<5;                                             /* Sets trash size to the first three bits */
   byte1 |= trash_size;                                                    /* Adds trash size to the start of the first byte */
   fprintf(dest_file, "%c", byte1);                                        /* Prints first byte in the destination file */
   fclose(dest_file);
-  
+
 }

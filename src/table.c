@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../inc/heap.h"
 #include "../inc/table.h"
+#include "../inc/huffman_tree.h"
 
 struct bit_node{
 
@@ -14,7 +14,7 @@ struct bit_node{
 struct table{
 
   BitNode *first;
-  BitNode *last;   
+  BitNode *last;
 
 };
 // Allocates an empty table, recieves the size of the table (the table is an array of lists)
@@ -66,7 +66,7 @@ void fill_table(Node *bt, Table *table, char *next_binary, char *code){
   strcat(code, next_binary);
 
   if(is_leaf(bt)){
-    
+
     int i;
     //take the char as the array index and code as the "binary" of said char
     for(i = 0; i < strlen(code); i++){
@@ -89,18 +89,18 @@ void fill_table(Node *bt, Table *table, char *next_binary, char *code){
 // Writes the coded chars in the destination file and returns the trash size
 // Recieves the origin file content, the origin file size, a pointer to the destination file and the table with the "binaries" of each char in the origin file
 int write_in_file(unsigned char *file_content, size_t file_size, FILE *dest_file, Table *table){
-  
+
   int i, j = 7;
   BitNode *current = NULL;
   unsigned char byte;
-  
+
   for(i = 0; i < file_size; i++){
-    
+
     current = table[file_content[i]].first;
-    
+
     for(; j >= 0; j--){
 
-      if(current->bit == '1'){        
+      if(current->bit == '1'){
         (byte |= 1<<j);
       }
 
@@ -117,14 +117,14 @@ int write_in_file(unsigned char *file_content, size_t file_size, FILE *dest_file
         j--;
         break;
       }
-      
+
       current = current->next;
 
       if(j == 0){
         putc(byte, dest_file);
         j = 8;
         byte = 0;
-        
+
       }
     }
   }

@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../inc/heap.h"
-#include "compress.c"
-#include "decompress.c"
+#include "../inc/compress.h"
+#include "../inc/decompress.h"
 
 void help();
 
@@ -11,7 +10,7 @@ int main(int argc, char const *argv[]) {
   FILE *file;
   char *src_filename, *dest_filename, option[3];
   unsigned char *file_content;
-  size_t file_size;
+  long int file_size;
 
   if(argc == 1) {
     help();

@@ -1,9 +1,8 @@
+#include <stdio.h>
+#include "../inc/huffman_tree.h"
+
 #ifndef TABLE_H
 #define TABLE_H
-
-  #include "heap.h"
-  #include <stdlib.h>
-  #include <stdio.h>
 
   typedef struct bit_node BitNode;
 
@@ -12,7 +11,7 @@
   Table* create_table(int size);
 
   BitNode* create_bit_node(char item);
-  
+
   void add_to_list(Table* list, unsigned char position, char bit);
 
   void fill_table(Node* bt, Table* table, char* code, char* string);
