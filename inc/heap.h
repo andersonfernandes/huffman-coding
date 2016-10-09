@@ -5,6 +5,10 @@
 
   typedef struct heap Heap;
 
+  /* Creates a heap
+   * Requires the size of the heap
+   * Returns heap
+   */
   Heap* create_heap(int size);
 
   int get_parent_index(Heap *heap, int i);
