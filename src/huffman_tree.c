@@ -44,10 +44,10 @@ Node* str_to_tree(char* str, int* i) {
     Node* left = str_to_tree(str, i);
     ++(*i);
     return create_tree_node('*', left, str_to_tree(str, i));
-  } else if(str[*i] == '\\'){
-    ++(*i);
-    return create_tree_node(str[*i], NULL, NULL);
   }
+
+  if(str[*i] == '\\') ++(*i);
+
   return create_tree_node(str[*i], NULL, NULL);
 }
 
