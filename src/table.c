@@ -92,7 +92,7 @@ int write_in_file(unsigned char *file_content, size_t file_size, FILE *dest_file
 
   int i, j = 7;
   BitNode *current = NULL;
-  unsigned char byte;
+  unsigned char byte = 0;
 
   for(i = 0; i < file_size; i++){
 
@@ -154,5 +154,27 @@ void print_table(Table *table, int size){
   }
 
   return;
+
+}
+
+void free_table(Table *table, int size){
+
+  for(i = 0; i < size; i++){
+
+    if(table[i].first != NULL){
+
+      BitNode *first = table[i].first
+      BitNode *second = first->next;
+      table[i].first = NULL;
+
+      while(second != NULL){
+        free(first);
+        first = second;
+        second = first->next;
+      }
+
+    }
+
+  }
 
 }

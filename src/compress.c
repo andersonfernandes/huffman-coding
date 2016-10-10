@@ -53,7 +53,7 @@ void compress(unsigned char *file_content, long int file_size, char *dest_filena
   free_tree(bt);
 
   trash_size = write_in_file(file_content, file_size, dest_file, table);  /* Prints the compressed content and returns the trash size */
-
+  free_table(table, 256);
   free(table);
 
   rewind(dest_file);                                                      /* Rewinds the dest_file pointer to the beginning of the destination file */
