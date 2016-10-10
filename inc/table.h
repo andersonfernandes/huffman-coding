@@ -41,4 +41,9 @@
    */
   void print_table(Table* table, int size);
 
+  /* Frees a table 
+   * Reuires a table and the size
+  */
+  void free_table(Table *table, int size);
+
 #endif

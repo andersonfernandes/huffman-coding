@@ -6,7 +6,7 @@
 #include "../inc/huffman_tree.h"
 #include "../inc/table.h"
 
-#define ASCII_SIZE 256;
+#define ASCII_SIZE 256
 
 void compress(unsigned char *file_content, long int file_size, char *dest_filename) {
   int i, frequency[ASCII_SIZE] = {0};
@@ -56,7 +56,6 @@ void compress(unsigned char *file_content, long int file_size, char *dest_filena
 
   trash_size = write_in_file(file_content, file_size, dest_file, table);  /* Prints the compressed content and returns the trash size */
   free_table(table, ASCII_SIZE);
-  free(table);
 
   rewind(dest_file);                                                      /* Rewinds the dest_file pointer to the beginning of the destination file */
 

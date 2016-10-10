@@ -158,12 +158,12 @@ void print_table(Table *table, int size){
 }
 
 void free_table(Table *table, int size){
-
+  int i;
   for(i = 0; i < size; i++){
 
     if(table[i].first != NULL){
 
-      BitNode *first = table[i].first
+      BitNode *first = table[i].first;
       BitNode *second = first->next;
       table[i].first = NULL;
 
@@ -176,5 +176,6 @@ void free_table(Table *table, int size){
     }
 
   }
-
+  free(table);
+  return;
 }
