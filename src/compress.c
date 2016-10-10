@@ -61,7 +61,7 @@ void compress(unsigned char *file_content, long int file_size, char *dest_filena
 
   trash_size = trash_size<<5;                                             /* Sets trash size to the first three bits */
   byte1 |= trash_size;                                                    /* Adds trash size to the start of the first byte */
-  fprintf(dest_file, "%c", byte1);                                        /* Prints first byte in the destination file */
+  putc(byte1, dest_file);                                                 /* Prints first byte in the destination file */
   fclose(dest_file);
 
 }
