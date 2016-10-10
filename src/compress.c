@@ -6,9 +6,11 @@
 #include "../inc/huffman_tree.h"
 #include "../inc/table.h"
 
+#define ASCII_SIZE 256;
+
 void compress(unsigned char *file_content, long int file_size, char *dest_filename) {
-  int i, frequency[256] = {0};
-  Heap* heap = create_heap(256);
+  int i, frequency[ASCII_SIZE] = {0};
+  Heap* heap = create_heap(ASCII_SIZE);
   Node* bt = NULL;
   int tree_size, trash_size;
   unsigned char byte1;
@@ -20,7 +22,7 @@ void compress(unsigned char *file_content, long int file_size, char *dest_filena
 
   }
 
-  for(i = 0; i < 256; i++){
+  for(i = 0; i < ASCII_SIZE; i++){
     if(frequency[i] > 0){
 
       enqueue(heap, create_node(i, frequency[i]));                        /* Uses the index of the array as the char and the value of each index as the frequency when creating nodes */
@@ -32,7 +34,7 @@ void compress(unsigned char *file_content, long int file_size, char *dest_filena
   tree_size = calculate_tree_size(bt, 0);                                 /* Calculates the number of nodes in the huff tree */
   free(heap);
 
-  Table* table = create_table(256);                                       /* Creates the table that will contain the value of each bit of the characters present in the text, according to the huff tree */
+  Table* table = create_table(ASCII_SIZE);                                       /* Creates the table that will contain the value of each bit of the characters present in the text, according to the huff tree */
 
   char* empty_string = (char*)calloc(17, sizeof(char));                   /* Empty string used to allocate the memory space needed for the average huff binary code of a letter */
 
@@ -53,7 +55,7 @@ void compress(unsigned char *file_content, long int file_size, char *dest_filena
   free_tree(bt);
 
   trash_size = write_in_file(file_content, file_size, dest_file, table);  /* Prints the compressed content and returns the trash size */
-  free_table(table, 256);
+  free_table(table, ASCII_SIZE);
   free(table);
 
   rewind(dest_file);                                                      /* Rewinds the dest_file pointer to the beginning of the destination file */
